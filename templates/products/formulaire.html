@@ -1,0 +1,118 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<style>
+    .text-red{
+        color: tomato !important;
+    }
+</style>
+{% endblock styles %}
+
+{% block content %}
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-6 offset-3 ">
+            
+            <form id="formProd"  action="{% url 'products:register'  %}" autocomplete="off">
+                {% csrf_token %}
+                <div class="row ">
+                    <div class="col-12">
+                        <div class="form-group validate">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+
+                        <div class="form-group validate">
+                            <label for="category">Category</label>
+                            <input type="text" name="category" class="form-control" id="category" placeholder="Enter category">
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+
+                        <div class="form-group validate">
+                            <label for="image">Image</label>
+                            <input type="file" name="file" class="form-control image-value" id="id_image">
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="form-group validate">
+                            <label for="created_at">Created_at</label>
+                            <input type="time" name="created_at" class="form-control" id="created_at">
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="form-group validate">
+                            <label for="updated_at">Updated_at</label>
+                            <input type="time" name="updated_at" class="form-control" id="updated_at">
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+                    </div>
+
+                    <div class="col-12 ">
+                        <button type="submit" id="submit" class="btn btn-primary pl-5 pr-5 btnSave">Save</button>
+                            {% comment %} {% url 'app-name:name' %} {% endcomment %}
+                        <a class="" href="{% url 'products:products'  %}">Voir produit</a>
+                    </div>
+
+                    
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+
+// Poster dans la base de données 
+$(document).ready(function(){
+    $('#submit').on('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        alert("bonjour")
+        $url = $('#formProd').attr('action');
+        var img_data = $('#id_image').get(0).files[0];
+
+        let formdata = new FormData();
+        formdata.append('name', $('[name=name]').val());
+        formdata.append('category', $('[name=category]').val());
+        formdata.append('created_at', $('[name=created_at]').val());
+        formdata.append('updated_at', $('[name=updated_at]').val());
+        formdata.append("img_data", img_data);
+        $.ajax({
+            type: "POST",
+            url: $url, // 
+            headers:{ 'X-CSRFToken': '{{ csrf_token }}'},
+            data: formdata,
+            cache: false,
+            processData: false,
+            contentType:false,
+            success: function(){
+                alert('Save Data');
+                $('#name').val('');
+                $('#category').val('');
+                $('#id_image').val('');
+                $('#created_at').val('');
+                $('#updated_at').val('');
+                //window.location = "/";
+            
+            }
+            
+            })
+
+    
+    
+    })
+    
+})
+
+</script>
+{% endblock scripts %}

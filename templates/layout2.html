@@ -1,0 +1,43 @@
+{% load static %}
+<!doctype html>
+<meta charset="utf-8">
+    <title>{% block title %}Student Database{% endblock %}</title>
+    <style type="text/css">
+      .errorlist {
+        margin: 0;
+        padding: 0;
+      }
+      .errorlist li {
+        list-style: none;
+        font-size: 90%;
+        color: red;
+      }
+      .errorlist ~ input,
+      .errorlist ~ select {
+        border-color: red;
+      }
+    </style>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Tasky</title>
+    {% load static %}
+
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
+  </head>
+  <body>
+    <h1>Student Database</h1>
+    <hr>
+    {% block content %}
+    {% endblock %}
+
+     <!-- cdn jQuery-->
+      <!--js-->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>

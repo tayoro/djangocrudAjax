@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+{% endblock styles %}
+
+{% block content %}
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-12 text-center">
+            <button class="btn btn-primary btn-get-data">Récupérer le fichier HTML dans un div</button>
+                                                    <!--recuper les donnee en json (voir urls.py puis views.py)-->
+            <div class="content-data mt-4" data-url="{% url 'tasks:tutorial_data' %}">Le contenu du fichier s'affichera ici </div>
+            {% comment %} <div class="content-data mt-4">
+                {{ task_json.0.fields.owner }}
+
+            </div> {% endcomment %}
+            
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    // script pour recuper les donnée en Json
+    $(".btn-get-data").on("click", function(){
+        $.ajax({
+            url: $(".content-data").data('url'),
+            type: "GET",
+            dataType: 'json',
+            success: function(resp){
+                //on replace le contenu du div content-data par les données json
+                $(".content-data").html("j'ai "+resp[0].pk+" ans");
+            },
+            error: function(resp){
+                console.log("something went wrong");
+            }
+        });
+    });
+
+    
+</script>
+{% endblock scripts %}

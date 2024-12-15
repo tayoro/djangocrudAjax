@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<style>
+    .text-red{
+        color: tomato !important;
+    }
+</style>
+{% endblock styles %}
+
+{% block content %}
+<div class="container">
+    <div class="col-2" >
+         {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+       <a href="{% url 'tasks:task' %}" class="link-danger">Tasks</a> 
+    </div>
+    <div class="col-2" >
+        {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+      <a href="{% url 'products:products' %}" class="link-danger">Products</a> 
+    </div>
+    <div class="col-2" >
+      {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+      <a href="{% url 'comments:comment' %}" class="link-danger">Comments</a> 
+    </div>
+
+    <div class="col-2" >
+      {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+      <a href="{% url 'tasks:tutorial' %}" class="link-danger">tutorial</a> 
+    </div>
+    <div class="col-2" >
+      {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+      <a href="{% url 'tutorial:index' %}" class="link-danger">tutorial select</a> 
+    </div>
+    <div class="col-2" >
+      {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+      <a href="{% url 'dropdown:index' %}" class="link-danger">dropdown</a> 
+    </div>
+    <div class="col-2" >
+      {% comment %} <!-- {% url 'app-name:name' %} --> {% endcomment %}
+      <a href="{% url 'userDropdown:student_changelist' %}" class="link-danger">userDropdown</a> 
+    </div>
+    
+</div>
+
+{% endblock content %}
+

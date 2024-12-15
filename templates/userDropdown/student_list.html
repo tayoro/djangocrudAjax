@@ -1,0 +1,44 @@
+{% extends 'layout2.html' %}
+
+{% block title %}Human Resources Module{% endblock %}
+
+<!--block content-->
+{% block content %}
+  <h2>Human Resources Module » People Management</h2>
+
+  <p>
+    <a href="{% url 'userDropdown:student_add' %}">Add Student</a>
+  </p>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Birthdate</th>
+        <th>College</th>
+        <th>Branch</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for student in students %}
+        <tr class="record">
+          <td><a href="{% url 'userDropdown:student_change' student.pk %}">{{ student.name }}</a></td>
+          <td>{{ student.birthdate }}</td>
+          <td>{{ student.college.name }}</td>
+          <td>{{ student.branch.name }}</td>
+          <td>
+                            <!--'app_name:pattern_name'-->
+            <a href="{% url 'userDropdown:student_delete' student.pk  %}" class="link-delete text-danger">Delete</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No person in the database. <a href="{% url 'userDropdown:student_add' %}">Add the first person</a>.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content%}
+
+

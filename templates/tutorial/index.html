@@ -1,0 +1,145 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<style>
+    .text-red{
+        color: tomato !important;
+    }
+</style>
+{% endblock styles %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1 class="col-10 offset-3"> tuto de select dependant Ajax jQuery </h1>
+    
+    <div class="row pt-5">
+        <div class="col-6 offset-3">
+            
+            <form id="formAdd" action="{% url 'tutorial:index'  %}" autocomplete="off">
+                {% csrf_token %}
+                <div class="row">
+
+                    <div class="col-12">
+                        <!---->
+                        <div class="form-group validate">
+
+                            <label for="">Category</label>
+                            <select id="category" name="category" class="form-control">
+                                <!--Les elements a selectionner-->
+                                <option value="">--Select--</option>
+                                {% for product in product_list %}
+                                <option value="{{ product.category }}">{{ product.category }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+
+                        <!---->
+                        <div class="form-group validate">
+
+                            <label for="">Product</label>
+                            <select id="product" name="product" class="form-control">
+                                <!--Les elements a selectionner-->
+                                <option class="after" value="">--Select--</option>
+                            </select>
+                            <small class="text-red text-muted mySpan"></small>
+                        </div>
+                    </div>
+
+                    <!---->
+                    <div class="col-6">
+                        <button type="submit" id="submit" value="Submit" class="btn btn-primary pl-5 pr-5 btnSave">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+
+// change la valeurs select[name='category']
+$("#formAdd select[name='category']").on('change', function(){
+
+    var $this = $(this);
+    // si aucune valeur 
+    if($this.val() !=''){
+        // supression des valeurs selects[name='produit']
+        $("#formAdd select[name='product']").find('.after').nextAll().remove();
+        $.ajax({
+            url: '/tutorial/'+$this.val(),
+            type: 'GET',
+            success: function(resp){
+                let options = '';
+                resp.data.forEach(product => {
+                    options+='<option value='+product.name+'>'+product.name +'</option>';
+                });
+                $("#formAdd select[name='product']").find('.after').after(options);
+            }, 
+            error: function(resp){
+                console.log('Something went wrong');
+            }
+        });
+    }else{
+        $("#formAdd select[name='product']").find('.after').nextAll().remove();
+    }
+});
+
+
+
+  
+// Poster dans la base de données 
+$(document).ready(function(){
+    $('#submit').on('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        // recuperer la valeurs dans differents champs 
+        $category = $('#category').val();
+        $product = $('#product').val();
+
+        $url = $('#formAdd').attr('action'); // url
+        var valid = true;
+
+        // pour chaque select de formAdd
+        $('#formAdd select').each(function() {
+        let $this = $(this);
+        
+        // si un select ne contient pas de valeur 
+            if(!$this.val()) {
+                valid = false;
+                $this.parents('.validate').find('.mySpan').text('The '+$this.attr('name').replace(/[\_]+/g, ' ')+' field is required');
+            }
+        });
+        if(valid){
+            $('select').parents('.validate').find('.mySpan').text('');
+            $.ajax({
+            type: "POST",
+            url: $url, // 
+            data:{
+                category: $category,
+                product: $product,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(){
+                alert('Save Data');
+                $('#category').val('');
+                $('#product').val('');
+                //window.location = "/";
+            
+            }
+            
+            })
+        }
+    
+    
+    })
+    
+})
+
+</script>
+{% endblock scripts %}
